@@ -47,7 +47,10 @@ describe('Supabase security contracts', () => {
       'alter table public.orders enable row level security;',
     )
     expect(initialMigration).toContain(
-      'on public.orders for select, update to authenticated',
+      'on public.orders for select to authenticated',
+    )
+    expect(initialMigration).toContain(
+      'on public.orders for update to authenticated',
     )
     expect(initialMigration).toContain(
       'revoke all on function public.create_cod_order',

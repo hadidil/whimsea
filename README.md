@@ -55,8 +55,10 @@ to the GitHub repository, use:
 - `VITE_SUPABASE_ANON_KEY`: the production Supabase publishable/anon key
 
 Only the publishable Supabase key belongs in Pages environment variables. Never
-add a service-role key. The repository includes Cloudflare Pages SPA fallback
-and response headers in `public/_redirects` and `public/_headers`.
+add a service-role key. The repository includes response headers in
+`public/_headers`. Wrangler's `single-page-application` asset handling provides
+the SPA fallback; do not add a catch-all `public/_redirects` rule when deploying
+with `wrangler deploy`, because Workers rejects that rule as an infinite loop.
 
 Until Supabase, owner-approved products, delivery fees, legal/contact details,
 and COD operations are configured, deploy as a preview. The app intentionally

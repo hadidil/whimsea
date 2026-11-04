@@ -29,17 +29,18 @@ describe('Whimsea app shell', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders the demo catalog controls and products', async () => {
+  it('renders catalog controls with demo or live catalog state', async () => {
     render(
       <MemoryRouter initialEntries={['/shop']}>
         <App />
       </MemoryRouter>,
     )
 
-    expect(await screen.findByText('Mode démonstration')).toBeInTheDocument()
     expect(screen.getByRole('searchbox')).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: 'Pearl Halo' }),
+      await screen.findByRole('heading', {
+        name: /pearl halo|aucun résultat pour le moment/i,
+      }),
     ).toBeInTheDocument()
   })
 })

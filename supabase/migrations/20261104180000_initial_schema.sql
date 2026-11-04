@@ -211,8 +211,12 @@ create policy "admins read profiles"
 on public.admin_profiles for select to authenticated
 using (public.is_admin());
 
-create policy "admins manage orders"
-on public.orders for select, update to authenticated
+create policy "admins read orders"
+on public.orders for select to authenticated
+using (public.is_admin());
+
+create policy "admins update orders"
+on public.orders for update to authenticated
 using (public.is_admin())
 with check (public.is_admin());
 
