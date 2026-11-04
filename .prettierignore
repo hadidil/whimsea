@@ -1,0 +1,5 @@
+node_modules
+dist
+package-lock.json
+WHIMSEA_COPILOT_MASTER_PLAN.md
+src/assets
