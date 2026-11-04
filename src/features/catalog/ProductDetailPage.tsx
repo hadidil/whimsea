@@ -1,18 +1,49 @@
 import { ArrowLeft, Heart, ShieldCheck } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { formatMad, getDemoProducts } from './catalog'
+import { formatMad, loadCatalog, type CatalogProduct } from './catalog'
 import { useCart } from '../cart/useCart'
 
 export function ProductDetailPage() {
   const { slug } = useParams()
-  const product = getDemoProducts().find((item) => item.slug === slug)
+  const [product, setProduct] = useState<CatalogProduct>()
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
   const { addItem, itemCount } = useCart()
 
-  if (!product) {
+  useEffect(() => {
+    let isCurrent = true
+
+    void loadCatalog()
+      .then(({ products }) => {
+        if (isCurrent) setProduct(products.find((item) => item.slug === slug))
+      })
+      .catch(() => {
+        if (isCurrent) setError('Impossible de charger cette pièce.')
+      })
+      .finally(() => {
+        if (isCurrent) setIsLoading(false)
+      })
+
+    return () => {
+      isCurrent = false
+    }
+  }, [slug])
+
+  if (isLoading) {
+    return (
+      <main className="catalog-state product-not-found">
+        <p className="eyebrow">La boutique</p>
+        <h1>Chargement de la pièce…</h1>
+      </main>
+    )
+  }
+
+  if (error || !product) {
     return (
       <main className="catalog-state product-not-found">
         <p className="eyebrow">Bijou introuvable</p>
-        <h1>Cette pièce n’est pas disponible.</h1>
+        <h1>{error || 'Cette pièce n’est pas disponible.'}</h1>
         <Link className="button button-secondary" to="/shop">
           Retour à la boutique
         </Link>
@@ -27,10 +58,18 @@ export function ProductDetailPage() {
       </Link>
       <div className={`product-detail-layout product-detail-${product.tone}`}>
         <div className="product-detail-image">
-          <span className="product-image-placeholder">
-            Photo réelle à venir
-          </span>
-          <span className="demo-image-label">Image de démonstration</span>
+          {product.imageUrl ? (
+            <img
+              className="product-image"
+              src={product.imageUrl}
+              alt={product.imageAlt || product.name}
+            />
+          ) : (
+            <span className="product-image-placeholder">Photo à venir</span>
+          )}
+          {product.isDemo && (
+            <span className="demo-image-label">Image de démonstration</span>
+          )}
         </div>
         <div className="product-detail-copy">
           <p className="eyebrow">{product.category}</p>
@@ -40,8 +79,9 @@ export function ProductDetailPage() {
           <div className="detail-disclaimer">
             <ShieldCheck aria-hidden="true" size={18} />
             <span>
-              Prix, disponibilité et détails réels seront confirmés au
-              lancement.
+              {product.isDemo
+                ? 'Prix, disponibilité et détails réels seront confirmés au lancement.'
+                : 'Prix et disponibilité confirmés par le catalogue Whimsea.'}
             </span>
           </div>
           <button

@@ -38,9 +38,7 @@ describe('Whimsea app shell', () => {
 
     expect(screen.getByRole('searchbox')).toBeInTheDocument()
     expect(
-      await screen.findByRole('heading', {
-        name: /pearl halo|aucun résultat pour le moment/i,
-      }),
+      screen.getByRole('heading', { name: 'Des détails pour tous les jours.' }),
     ).toBeInTheDocument()
   })
 })
