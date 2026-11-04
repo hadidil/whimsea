@@ -40,6 +40,13 @@ admin-only write policies. `/admin/catalog` stores ordered image metadata,
 including alt text, in `product_images`. Use owner-approved product media; the
 application keeps a placeholder when no image exists.
 
+The approved first product batch has a retry-safe, owner-run seed at
+`seed/20261105_approved_product_batch_01.sql`. It uses SKU conflict handling,
+sets stock to `0`, and leaves products inactive. Run it only after the
+categories and base migration exist. Upload the matching WebP files through
+the authenticated `/admin/catalog` flow; local files in `public/images` are
+editorial fallbacks, not proof that Supabase Storage has been populated.
+
 ## Applying it
 
 The Supabase CLI is not installed or authenticated in this workspace, and no

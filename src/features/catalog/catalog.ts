@@ -14,6 +14,22 @@ export type CatalogProduct = {
   tone: 'rose' | 'champagne' | 'lilac'
   imageUrl?: string
   imageAlt?: string
+  imageUrls?: string[]
+  imageAltTexts?: string[]
+}
+
+const approvedLocalImages: Record<string, string[]> = {
+  'ruby-necklace': [
+    '/images/products/ruby-water.webp',
+    '/images/products/ruby-satin.webp',
+    '/images/products/ruby-model.webp',
+  ],
+  'crystal-necklace': [
+    '/images/products/crystal-pink.webp',
+    '/images/products/crystal-model.webp',
+  ],
+  'onyx-necklace': ['/images/products/onyx-model.webp'],
+  'pearl-necklace': ['/images/products/pearl-model.webp'],
 }
 
 const demoProducts: CatalogProduct[] = [
@@ -30,6 +46,8 @@ const demoProducts: CatalogProduct[] = [
     featured: true,
     isDemo: true,
     tone: 'rose',
+    imageUrls: [],
+    imageAltTexts: [],
   },
   {
     id: 'demo-moonlit-chain',
@@ -44,6 +62,8 @@ const demoProducts: CatalogProduct[] = [
     featured: true,
     isDemo: true,
     tone: 'champagne',
+    imageUrls: [],
+    imageAltTexts: [],
   },
   {
     id: 'demo-soft-star',
@@ -58,6 +78,8 @@ const demoProducts: CatalogProduct[] = [
     featured: false,
     isDemo: true,
     tone: 'lilac',
+    imageUrls: [],
+    imageAltTexts: [],
   },
 ]
 
@@ -72,6 +94,8 @@ function mapLiveProduct(product: {
   featured: boolean
   imageUrl?: string
   imageAlt?: string
+  imageUrls?: string[]
+  imageAltTexts?: string[]
 }): CatalogProduct {
   return {
     id: product.id,
@@ -87,6 +111,8 @@ function mapLiveProduct(product: {
     tone: 'rose',
     imageUrl: product.imageUrl,
     imageAlt: product.imageAlt,
+    imageUrls: product.imageUrls,
+    imageAltTexts: product.imageAltTexts,
   }
 }
 
@@ -131,14 +157,22 @@ export async function loadCatalog(): Promise<{
   const products = liveProducts.map((product) => {
     const images = product.product_images ?? []
     const image = images.sort((a, b) => a.sort_order - b.sort_order)[0]
-    const imageUrl = image
-      ? client.storage.from('product-images').getPublicUrl(image.storage_path)
-          .data.publicUrl
-      : undefined
+    const storageImages = images.map(
+      (item) =>
+        client.storage.from('product-images').getPublicUrl(item.storage_path)
+          .data.publicUrl,
+    )
+    const localImages = approvedLocalImages[product.slug] ?? []
+    const imageUrls = storageImages.length ? storageImages : localImages
+    const imageUrl = imageUrls[0]
     return mapLiveProduct({
       ...product,
       imageUrl,
       imageAlt: image?.alt_text,
+      imageUrls,
+      imageAltTexts: images.length
+        ? images.map((item) => item.alt_text)
+        : localImages.map((_, index) => `${product.name} image ${index + 1}`),
     })
   })
 

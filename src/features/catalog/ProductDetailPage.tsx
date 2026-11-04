@@ -7,6 +7,7 @@ import { useCart } from '../cart/useCart'
 export function ProductDetailPage() {
   const { slug } = useParams()
   const [product, setProduct] = useState<CatalogProduct>()
+  const [selectedImage, setSelectedImage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const { addItem, itemCount } = useCart()
@@ -51,6 +52,12 @@ export function ProductDetailPage() {
     )
   }
 
+  const imageUrls = product.imageUrls?.length
+    ? product.imageUrls
+    : product.imageUrl
+      ? [product.imageUrl]
+      : []
+
   return (
     <main className="product-detail-page">
       <Link className="back-link" to="/shop">
@@ -58,12 +65,42 @@ export function ProductDetailPage() {
       </Link>
       <div className={`product-detail-layout product-detail-${product.tone}`}>
         <div className="product-detail-image">
-          {product.imageUrl ? (
-            <img
-              className="product-image"
-              src={product.imageUrl}
-              alt={product.imageAlt || product.name}
-            />
+          {imageUrls.length ? (
+            <div className="product-gallery">
+              <img
+                className="product-image"
+                src={imageUrls[selectedImage] || imageUrls[0]}
+                alt={
+                  product.imageAltTexts?.[selectedImage] ||
+                  product.imageAlt ||
+                  product.name
+                }
+              />
+              {imageUrls.length > 1 && (
+                <div
+                  className="product-gallery-thumbnails"
+                  aria-label="Images du produit"
+                >
+                  {imageUrls.map((imageUrl, index) => (
+                    <button
+                      className={index === selectedImage ? 'is-selected' : ''}
+                      key={imageUrl}
+                      type="button"
+                      aria-label={`Voir l’image ${index + 1}`}
+                      onClick={() => setSelectedImage(index)}
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={
+                          product.imageAltTexts?.[index] ||
+                          `${product.name} image ${index + 1}`
+                        }
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             <span className="product-image-placeholder">Photo à venir</span>
           )}

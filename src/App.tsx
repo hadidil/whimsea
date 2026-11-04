@@ -139,6 +139,11 @@ function HomePage() {
           className="hero-art"
           aria-label="Illustration décorative de perles"
         >
+          <img
+            className="hero-product-image"
+            src="/images/products/ruby-water.webp"
+            alt="Collier Ruby de Whimsea"
+          />
           <div className="hero-orbit hero-orbit-one" />
           <div className="hero-orbit hero-orbit-two" />
           <div className="hero-pearl hero-pearl-large" />
@@ -168,21 +173,27 @@ function HomePage() {
           </Link>
         </div>
         <div className="collection-grid">
-          {['Pearls & light', 'Everyday magic', 'Little keepsakes'].map(
-            (collection, index) => (
-              <Link
-                className={`collection-card card-tone-${index + 1}`}
-                to="/shop"
-                key={collection}
-              >
-                <span className="card-placeholder">Image à venir</span>
-                <span className="collection-card-footer">
-                  <span>{collection}</span>
-                  <ArrowRight aria-hidden="true" size={16} />
-                </span>
-              </Link>
-            ),
-          )}
+          {[
+            ['Pearls & light', '/images/products/ruby-water.webp'],
+            ['Everyday magic', '/images/products/crystal-pink.webp'],
+            ['Little keepsakes', '/images/products/pearl-model.webp'],
+          ].map(([collection, image], index) => (
+            <Link
+              className={`collection-card card-tone-${index + 1}`}
+              to="/shop"
+              key={collection}
+            >
+              <img
+                className="collection-card-image"
+                src={image}
+                alt={collection}
+              />
+              <span className="collection-card-footer">
+                <span>{collection}</span>
+                <ArrowRight aria-hidden="true" size={16} />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 
