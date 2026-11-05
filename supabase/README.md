@@ -74,5 +74,9 @@ changed by this update.
 The Supabase CLI is not installed or authenticated in this workspace, and no
 Supabase project credentials are configured. After the owner creates a project,
 apply the migration with the Supabase CLI or SQL editor, then set the values
-listed in `.env.example` in a local `.env.local` file. Never commit that file
-or a service-role key.
+listed in `.env.example` in a local `.env.local` file. The official Morocco
+delivery amounts are in
+`migrations/20261105010000_morocco_delivery_zones.sql`; apply that migration
+before enabling checkout. Set `VITE_INSTAGRAM_URL` to the confirmed public
+Whimsea Instagram URL before building. Never commit `.env.local` or a
+service-role key.

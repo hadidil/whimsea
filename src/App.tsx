@@ -1,9 +1,6 @@
 import {
   ArrowRight,
-  Camera,
-  CreditCard,
   Heart,
-  Mail,
   Menu,
   Shell,
   ShoppingBag,
@@ -24,6 +21,7 @@ import { ProductDetailPage } from './features/catalog/ProductDetailPage'
 import { ProductCard } from './features/catalog/ProductCard'
 import { ShopPage } from './features/catalog/ShopPage'
 import { loadCatalog, type CatalogProduct } from './features/catalog/catalog'
+import { InstagramIcon } from './components/InstagramIcon'
 import {
   AboutPage,
   ContactPage,
@@ -31,6 +29,7 @@ import {
   PrivacyPage,
   TermsPage,
 } from './features/content/BrandContentPages'
+import { instagramUrl } from './config/public'
 
 const navigation = [
   { label: 'Accueil', to: '/' },
@@ -358,14 +357,20 @@ function HomePage() {
             Instagram.
           </p>
         </div>
-        <a
-          className="button button-secondary newsletter-link"
-          href="https://www.instagram.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Camera aria-hidden="true" size={17} /> @whimsea
-        </a>
+        {instagramUrl ? (
+          <a
+            className="button button-secondary newsletter-link"
+            href={instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <InstagramIcon size={17} /> Instagram
+          </a>
+        ) : (
+          <span className="newsletter-link newsletter-link-disabled">
+            <InstagramIcon size={17} /> Instagram
+          </span>
+        )}
       </section>
     </main>
   )
@@ -436,25 +441,21 @@ function App() {
           <div>
             <p className="eyebrow">Nous trouver</p>
             <div className="footer-socials">
-              <a href="mailto:bonjour@whimsea.ma">
-                <Mail aria-hidden="true" size={16} /> bonjour@whimsea.ma
-              </a>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Camera aria-hidden="true" size={16} /> Instagram
-              </a>
+              {instagramUrl && (
+                <a href={instagramUrl} target="_blank" rel="noreferrer">
+                  <InstagramIcon size={16} /> Instagram
+                </a>
+              )}
             </div>
             <div className="footer-payments">
-              <span>
-                <CreditCard aria-hidden="true" size={15} /> Paiement sécurisé
-              </span>
+              <span>Paiement à la livraison</span>
               <Link to="/privacy">Confidentialité</Link>
               <Link to="/terms">Conditions</Link>
             </div>
           </div>
+          <p className="footer-copyright">
+            © 2026 Whimsea. Tous droits réservés.
+          </p>
         </footer>
       </div>
     </CartProvider>

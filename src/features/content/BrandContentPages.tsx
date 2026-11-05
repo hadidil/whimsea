@@ -1,5 +1,6 @@
-import { Mail, ShieldCheck, Truck } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ShieldCheck, Truck } from 'lucide-react'
+import { instagramUrl } from '../../config/public'
+import { InstagramIcon } from '../../components/InstagramIcon'
 
 type ContentPageProps = {
   eyebrow: string
@@ -24,19 +25,27 @@ export function AboutPage() {
     <ContentPage
       eyebrow="L’univers Whimsea"
       title="Une touche de poésie, tous les jours."
-      intro="Whimsea prépare une boutique marocaine de bijoux délicats pour les petits moments qui deviennent de grands souvenirs."
+      intro="Bienvenue dans l'univers Whimsea."
     >
       <section>
-        <h2>Une histoire à compléter avec vous</h2>
+        <h2>Bienvenue dans l'univers Whimsea</h2>
         <p>
-          Cette présentation est un brouillon éditorial. L’histoire officielle
-          de la marque, ses engagements et les informations sur les créations
-          seront ajoutés après validation de la propriétaire.
+          Whimsea est une petite boutique de bijoux née d'une envie simple :
+          apporter une touche de douceur, de fantaisie et d'éclat au quotidien.
+        </p>
+        <p>
+          Inspiré par les reflets de la mer, les coquillages, les perles et les
+          petits détails qui font toute la différence, l'univers Whimsea mêle
+          féminité, délicatesse et une pointe de magie.
+        </p>
+        <p>
+          Des bijoux à porter au quotidien, à offrir ou à s'offrir, pour ajouter
+          un peu de lumière à chaque moment.
+        </p>
+        <p>
+          <strong>Un petit bijou, une touche de magie.</strong>
         </p>
       </section>
-      <p className="approval-note" role="note">
-        Brouillon nécessitant validation propriétaire avant publication.
-      </p>
     </ContentPage>
   )
 }
@@ -46,26 +55,33 @@ export function ContactPage() {
     <ContentPage
       eyebrow="Contact"
       title="Parlons bijoux."
-      intro="Une question sur une commande ou une création ? Les coordonnées officielles seront publiées ici dès qu’elles seront confirmées."
+      intro="Une question sur un bijou ou une commande ? Retrouvez-nous sur Instagram, nous serons ravis de vous répondre."
     >
       <section className="contact-placeholder">
-        <Mail aria-hidden="true" size={22} />
+        <InstagramIcon size={22} />
         <div>
-          <h2>Coordonnées à confirmer</h2>
+          <h2>Whimsea sur Instagram</h2>
           <p>
-            Aucun numéro, e-mail ou compte social n’est inventé dans cette
-            version. Pour une commande, utilisez le parcours de checkout quand
-            la boutique et ses zones de livraison sont configurées.
+            Une question sur un bijou ou une commande ? Écrivez-nous sur
+            Instagram, nous serons ravis de vous répondre.
           </p>
-          <Link className="text-link" to="/shop">
-            Voir la boutique
-          </Link>
+          {instagramUrl ? (
+            <a
+              className="text-link"
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ouvrir Instagram
+            </a>
+          ) : (
+            <p className="contact-configuration">
+              Le lien Instagram sera disponible dès que le compte officiel sera
+              configuré.
+            </p>
+          )}
         </div>
       </section>
-      <p className="approval-note" role="note">
-        Ajouter ici un e-mail, un numéro et les réseaux sociaux approuvés par la
-        propriétaire.
-      </p>
     </ContentPage>
   )
 }
@@ -75,29 +91,23 @@ export function DeliveryReturnsPage() {
     <ContentPage
       eyebrow="Livraison & retours"
       title="Des informations claires avant de commander."
-      intro="Les frais et zones de livraison seront affichés depuis les données administrées dans Supabase."
+      intro="Les frais de livraison sont calculés selon la ville choisie au moment de la commande."
     >
       <section>
         <Truck aria-hidden="true" size={22} />
         <h2>Livraison au Maroc</h2>
         <p>
           Le paiement de la V1 se fait à la livraison. Une commande ne peut être
-          envoyée que vers une ville activée avec un tarif configuré par la
-          propriétaire.
+          envoyée que vers une ville activée et tarifée.
         </p>
       </section>
       <section>
         <h2>Retours et échanges</h2>
         <p>
-          Les délais, conditions, frais et exclusions de retour restent à
-          confirmer. Aucun engagement légal ou commercial n’est présenté comme
-          définitif dans ce brouillon.
+          Pour toute question concernant une commande, retrouvez-nous sur
+          Instagram avant de confirmer votre demande.
         </p>
       </section>
-      <p className="approval-note" role="note">
-        Texte juridique et politique de retour nécessitant validation avant
-        publication.
-      </p>
     </ContentPage>
   )
 }
@@ -107,7 +117,7 @@ export function PrivacyPage() {
     <ContentPage
       eyebrow="Confidentialité"
       title="Votre commande, vos données."
-      intro="Cette page décrit le périmètre technique actuel sans remplacer une politique juridique validée."
+      intro="Voici les informations essentielles sur les données nécessaires à une commande."
     >
       <section>
         <ShieldCheck aria-hidden="true" size={22} />
@@ -120,16 +130,13 @@ export function PrivacyPage() {
         </p>
       </section>
       <section>
-        <h2>À compléter</h2>
+        <h2>Utilisation des données</h2>
         <p>
-          Identité du responsable, durée de conservation, droits applicables et
-          contact confidentialité doivent être ajoutés après validation
-          propriétaire et juridique.
+          Les informations de commande sont utilisées pour préparer et suivre la
+          livraison, puis restent accessibles aux comptes administrateurs
+          autorisés.
         </p>
       </section>
-      <p className="approval-note" role="note">
-        Brouillon nécessitant validation juridique avant publication.
-      </p>
     </ContentPage>
   )
 }
@@ -139,7 +146,7 @@ export function TermsPage() {
     <ContentPage
       eyebrow="Conditions"
       title="Les règles de la boutique."
-      intro="Les conditions de vente finales seront publiées avant l’ouverture de la boutique."
+      intro="Les informations essentielles à connaître avant de confirmer une commande."
     >
       <section>
         <h2>Paiement à la livraison</h2>
@@ -150,16 +157,12 @@ export function TermsPage() {
         </p>
       </section>
       <section>
-        <h2>Informations à confirmer</h2>
+        <h2>Commande et livraison</h2>
         <p>
-          Prix, disponibilité, délais, retours, garanties, identité légale et
-          modalités de contact doivent être remplis avec les informations
-          approuvées par la propriétaire.
+          Les prix et la disponibilité sont vérifiés au moment de la commande.
+          Le paiement se fait exclusivement à la livraison, en espèces.
         </p>
       </section>
-      <p className="approval-note" role="note">
-        Conditions de vente à valider avant toute commande réelle.
-      </p>
     </ContentPage>
   )
 }
