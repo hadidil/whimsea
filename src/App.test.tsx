@@ -12,9 +12,13 @@ describe('Whimsea app shell', () => {
     )
 
     expect(
-      screen.getByRole('heading', { name: /little treasures/i }),
+      screen.getByRole('heading', {
+        name: /Colliers de princesse/,
+      }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Boutique' })).toBeInTheDocument()
+    expect(screen.getAllByRole('link', { name: 'Boutique' })).not.toHaveLength(
+      0,
+    )
   })
 
   it('renders a graceful not-found page', () => {
@@ -38,7 +42,9 @@ describe('Whimsea app shell', () => {
 
     expect(screen.getByRole('searchbox')).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: 'Des détails pour tous les jours.' }),
+      screen.getByRole('heading', {
+        name: 'Colliers aesthetic, princess vibes.',
+      }),
     ).toBeInTheDocument()
   })
 })

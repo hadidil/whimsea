@@ -181,7 +181,9 @@ export async function loadCatalog(): Promise<{
     }>
   }>
   const products = liveProducts.map((product) => {
-    const images = product.product_images ?? []
+    const images = [...(product.product_images ?? [])].sort(
+      (a, b) => a.sort_order - b.sort_order,
+    )
     const image = images.sort((a, b) => a.sort_order - b.sort_order)[0]
     const storageImages = images.map(
       (item) =>

@@ -1,0 +1,344 @@
+/* =====================================================================
+   WHIMSEA THEME (version légère)
+   À coller TOUT EN BAS de src/index.css.
+   Ne touche PAS à la mise en page de l'accueil (hero, collections,
+   éditorial, histoire, pied de page) : elle reste comme avant.
+   Si vous aviez déjà collé l'ancienne version de ce fichier, supprimez-la
+   d'abord, puis collez celle-ci.
+   ===================================================================== */
+
+/* ---------- 1. Palette or + rose très clair ---------- */
+:root {
+  --color-page: #fff8fa;
+  --color-blush-50: #fff1f5;
+  --color-blush-100: #fde6ee;
+  --color-blush-200: #f9d3e1;
+  --color-blush-300: #f2b8cd;
+  --color-rose: #8a6420; /* or foncé : liens, prix, états actifs */
+  --color-ink: #2e2326;
+  --color-muted: #6f5f63;
+  --color-border: #f0dce3;
+  --color-champagne: #c9a24b;
+  --color-gold-300: #f1dc9a;
+  --color-gold-400: #e4c26a;
+  --color-gold-500: #c9a24b;
+  --color-gold-600: #8a6420;
+  --gradient-gold: linear-gradient(
+    135deg,
+    #f6e7b0 0%,
+    #e4c26a 35%,
+    #c9a24b 62%,
+    #f1dc9a 100%
+  );
+  --shadow-soft: 0 18px 45px rgb(201 162 75 / 0.22);
+  --shadow-card: 0 10px 30px rgb(46 35 38 / 0.07);
+  --radius-media: 1.25rem;
+  --line: var(--color-border); /* variables manquantes de l'admin */
+  --muted: var(--color-muted);
+}
+
+/* ---------- 2. Barre du haut en or ---------- */
+.announcement {
+  background: var(--gradient-gold);
+  color: var(--color-ink);
+  flex-wrap: wrap;
+  font-weight: 600;
+  text-align: center;
+}
+
+.announcement .sparkle,
+.announcement svg {
+  color: var(--color-ink);
+  fill: var(--color-ink);
+}
+
+/* ---------- 3. Boutons or ---------- */
+.button-primary {
+  background: var(--gradient-gold);
+  background-position: 0 0;
+  background-size: 200% 100%;
+  box-shadow: 0 8px 22px rgb(201 162 75 / 0.28);
+  color: var(--color-ink);
+  transition:
+    background-position 500ms ease,
+    box-shadow 200ms ease,
+    transform 180ms ease;
+}
+
+.button-primary:hover {
+  background: var(--gradient-gold);
+  background-position: 100% 0;
+  background-size: 200% 100%;
+  box-shadow: var(--shadow-soft);
+}
+
+.button-secondary {
+  border-color: var(--color-gold-500);
+  color: var(--color-gold-600);
+}
+
+.button-secondary:hover {
+  background: var(--color-blush-100);
+}
+
+.cart-badge {
+  background: var(--gradient-gold);
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline-color: var(--color-gold-600);
+}
+
+/* Évite le zoom automatique sur iPhone dans les formulaires */
+.checkout-form input,
+.checkout-form select,
+.checkout-form textarea,
+.search-field input,
+.sort-field select,
+.delivery-field select {
+  font-size: 1rem;
+}
+
+/* ---------- 4. Page produit : galerie swipable ---------- */
+.product-detail-layout {
+  align-items: start;
+}
+
+.product-detail-media {
+  min-width: 0;
+  position: relative;
+}
+
+.gallery-stage {
+  background: linear-gradient(145deg, #ffffff, var(--color-blush-100));
+  border-radius: var(--radius-media);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-track {
+  cursor: grab;
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-track.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.gallery-slide {
+  aspect-ratio: 4 / 5;
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.gallery-slide img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  width: 100%;
+}
+
+.gallery-arrow {
+  align-items: center;
+  background: rgb(255 255 255 / 0.92);
+  border: 1px solid var(--color-gold-300);
+  border-radius: 50%;
+  box-shadow: var(--shadow-card);
+  color: var(--color-ink);
+  cursor: pointer;
+  display: grid;
+  height: 44px;
+  place-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+}
+
+.gallery-arrow:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.gallery-arrow-prev {
+  left: 0.75rem;
+}
+
+.gallery-arrow-next {
+  right: 0.75rem;
+}
+
+.gallery-counter {
+  background: rgb(255 255 255 / 0.92);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  position: absolute;
+  right: 0.85rem;
+  top: 0.85rem;
+}
+
+.gallery-dots {
+  bottom: 0.9rem;
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+.gallery-dots span {
+  background: rgb(255 255 255 / 0.7);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(46 35 38 / 0.15);
+  height: 8px;
+  width: 8px;
+}
+
+.gallery-dots span.is-active {
+  background: var(--color-gold-500);
+}
+
+.gallery-thumbs {
+  display: grid;
+  gap: 0.6rem;
+  grid-auto-columns: 72px;
+  grid-auto-flow: column;
+  margin-top: 0.8rem;
+  overflow-x: auto;
+  padding: 0.25rem;
+}
+
+.gallery-thumbs button {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  height: 72px;
+  overflow: hidden;
+  padding: 0;
+  width: 72px;
+}
+
+.gallery-thumbs button.is-selected {
+  border-color: var(--color-gold-500);
+  box-shadow: 0 0 0 2px var(--color-gold-500);
+}
+
+.gallery-thumbs img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.detail-description {
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+
+.detail-description p {
+  margin: 0 0 0.8rem;
+  max-width: 460px;
+}
+
+.detail-highlights {
+  display: grid;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+
+.detail-highlights li {
+  align-items: center;
+  display: flex;
+  font-size: 0.95rem;
+  gap: 0.65rem;
+}
+
+.detail-highlights svg {
+  color: var(--color-gold-500);
+  flex: none;
+}
+
+@media (max-width: 900px) {
+  .product-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .product-detail-media {
+    margin-inline: auto;
+    max-width: 520px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery-thumbs {
+    grid-auto-columns: 64px;
+  }
+
+  .gallery-thumbs button {
+    height: 64px;
+    width: 64px;
+  }
+}
+
+/* Sur écran tactile : on swipe, pas de flèches */
+@media (hover: none) {
+  .gallery-arrow {
+    display: none;
+  }
+}
+
+/* ---------- 5. Confirmation de commande + contact ---------- */
+.confirmation-call {
+  background: var(--color-blush-50);
+  border: 1px solid var(--color-gold-300);
+  border-radius: 1rem;
+  margin: 1rem 0;
+  max-width: 520px;
+  padding: 1rem 1.25rem;
+}
+
+.confirmation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.contact-placeholder .button {
+  margin-top: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-track {
+    scroll-behavior: auto;
+  }
+
+  .button-primary {
+    transition: none;
+  }
+}

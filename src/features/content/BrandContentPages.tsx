@@ -1,6 +1,6 @@
 import { ShieldCheck, Truck } from 'lucide-react'
-import { instagramUrl } from '../../config/public'
 import { InstagramIcon } from '../../components/InstagramIcon'
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../../config/social'
 
 type ContentPageProps = {
   eyebrow: string
@@ -24,23 +24,24 @@ export function AboutPage() {
   return (
     <ContentPage
       eyebrow="L’univers Whimsea"
-      title="Une touche de poésie, tous les jours."
-      intro="Bienvenue dans l'univers Whimsea."
+      title="Un petit coin de magie à porter au cou."
+      intro="Des bijoux aesthetic, brillants et abordables, pensés pour celles qui aiment les détails."
     >
       <section>
-        <h2>Bienvenue dans l'univers Whimsea</h2>
+        <h2>Bienvenue chez Whimsea</h2>
         <p>
-          Whimsea est une petite boutique de bijoux née d'une envie simple :
-          apporter une touche de douceur, de fantaisie et d'éclat au quotidien.
+          Whimsea est une petite boutique de bijoux en acier inoxydable, née
+          d’une envie simple : proposer des colliers de princesse, délicats et
+          brillants, à petit prix.
         </p>
         <p>
-          Inspiré par les reflets de la mer, les coquillages, les perles et les
-          petits détails qui font toute la différence, l'univers Whimsea mêle
-          féminité, délicatesse et une pointe de magie.
+          Inspirée par la mer, les coquillages, les perles et l’esthétique
+          Pinterest, la boutique mêle féminité, douceur et une pointe de magie.
         </p>
         <p>
-          Des bijoux à porter au quotidien, à offrir ou à s'offrir, pour ajouter
-          un peu de lumière à chaque moment.
+          Nos bijoux sont en acier inoxydable de haute qualité : ils résistent à
+          l’eau, ne noircissent pas et se portent au quotidien. Parfaits pour
+          s’offrir un petit plaisir ou faire un cadeau qui fait sourire.
         </p>
         <p>
           <strong>Un petit bijou, une touche de magie.</strong>
@@ -55,31 +56,27 @@ export function ContactPage() {
     <ContentPage
       eyebrow="Contact"
       title="Parlons bijoux."
-      intro="Une question sur un bijou ou une commande ? Retrouvez-nous sur Instagram, nous serons ravis de vous répondre."
+      intro="Une question sur un collier, une commande ou une livraison ? Écrivez-nous sur Instagram."
     >
       <section className="contact-placeholder">
         <InstagramIcon size={22} />
         <div>
-          <h2>Whimsea sur Instagram</h2>
+          <h2>Suivez-nous et écrivez-nous sur Instagram</h2>
           <p>
-            Une question sur un bijou ou une commande ? Écrivez-nous sur
-            Instagram, nous serons ravis de vous répondre.
+            Retrouvez toutes nos nouveautés et répondez-nous en message privé :
+            nous vous répondons avec plaisir.
           </p>
-          {instagramUrl ? (
-            <a
-              className="text-link"
-              href={instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ouvrir Instagram
-            </a>
-          ) : (
-            <p className="contact-configuration">
-              Le lien Instagram sera disponible dès que le compte officiel sera
-              configuré.
-            </p>
-          )}
+          <p>
+            <strong>{INSTAGRAM_HANDLE}</strong>
+          </p>
+          <a
+            className="button button-secondary"
+            href={INSTAGRAM_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <InstagramIcon size={16} /> Ouvrir Instagram
+          </a>
         </div>
       </section>
     </ContentPage>
@@ -90,22 +87,23 @@ export function DeliveryReturnsPage() {
   return (
     <ContentPage
       eyebrow="Livraison & retours"
-      title="Des informations claires avant de commander."
-      intro="Les frais de livraison sont calculés selon la ville choisie au moment de la commande."
+      title="Livraison partout au Maroc."
+      intro="Vous commandez, nous vous appelons pour confirmer, vous payez à la réception."
     >
       <section>
         <Truck aria-hidden="true" size={22} />
-        <h2>Livraison au Maroc</h2>
+        <h2>Livraison et paiement</h2>
         <p>
-          Le paiement de la V1 se fait à la livraison. Une commande ne peut être
-          envoyée que vers une ville activée et tarifée.
+          Nous livrons partout au Maroc. Le paiement se fait en espèces à la
+          livraison : vous ne payez rien en ligne. Les frais de livraison
+          dépendent de votre ville et s’affichent avant de confirmer.
         </p>
       </section>
       <section>
         <h2>Retours et échanges</h2>
         <p>
-          Pour toute question concernant une commande, retrouvez-nous sur
-          Instagram avant de confirmer votre demande.
+          Un souci avec votre commande ? Écrivez-nous sur Instagram{' '}
+          {INSTAGRAM_HANDLE}, nous trouverons une solution ensemble.
         </p>
       </section>
     </ContentPage>
@@ -123,18 +121,17 @@ export function PrivacyPage() {
         <ShieldCheck aria-hidden="true" size={22} />
         <h2>Données utilisées pour une commande</h2>
         <p>
-          Le checkout demande uniquement les informations nécessaires à la
-          livraison : nom, téléphone, ville, adresse et, si besoin, un repère ou
-          une note. Les données de commande sont destinées aux opérations
-          Whimsea et ne sont pas exposées dans le catalogue public.
+          Nous demandons uniquement ce qui sert à la livraison : nom, téléphone,
+          ville, adresse et, si besoin, un repère ou une note. Ces données sont
+          réservées à la préparation et au suivi de votre commande.
         </p>
       </section>
       <section>
         <h2>Utilisation des données</h2>
         <p>
-          Les informations de commande sont utilisées pour préparer et suivre la
-          livraison, puis restent accessibles aux comptes administrateurs
-          autorisés.
+          Vos informations sont utilisées pour vous appeler afin de confirmer la
+          commande, puis pour organiser la livraison. Elles ne sont jamais
+          affichées publiquement.
         </p>
       </section>
     </ContentPage>
@@ -151,16 +148,17 @@ export function TermsPage() {
       <section>
         <h2>Paiement à la livraison</h2>
         <p>
-          La V1 prévoit uniquement le paiement en espèces à la livraison. Le
-          montant affiché au checkout est confirmé par le serveur au moment de
-          la création de la commande.
+          Le paiement se fait uniquement en espèces, à la réception de votre
+          colis. Le montant affiché au moment de la commande est celui que vous
+          réglez au livreur.
         </p>
       </section>
       <section>
-        <h2>Commande et livraison</h2>
+        <h2>Commande et confirmation</h2>
         <p>
           Les prix et la disponibilité sont vérifiés au moment de la commande.
-          Le paiement se fait exclusivement à la livraison, en espèces.
+          Nous vous appelons ensuite pour confirmer votre commande avant
+          l’envoi.
         </p>
       </section>
     </ContentPage>

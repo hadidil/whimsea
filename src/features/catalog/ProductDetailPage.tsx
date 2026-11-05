@@ -1,26 +1,35 @@
-import { ArrowLeft, Heart, ShieldCheck } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ArrowLeft, Gem, Minus, Plus, Sparkles, Truck } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { formatMad, loadCatalog, type CatalogProduct } from './catalog'
+import { ProductGallery } from './ProductGallery'
+import { ProductCard } from './ProductCard'
 import { useCart } from '../cart/useCart'
 
 export function ProductDetailPage() {
   const { slug } = useParams()
   const [product, setProduct] = useState<CatalogProduct>()
-  const [selectedImage, setSelectedImage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [products, setProducts] = useState<CatalogProduct[]>([])
+  const [quantity, setQuantity] = useState(1)
+  const [isAdded, setIsAdded] = useState(false)
+  const [cartMessage, setCartMessage] = useState('')
+  const [showStickyBar, setShowStickyBar] = useState(false)
+  const mainButtonRef = useRef<HTMLButtonElement>(null)
   const { addItem, itemCount } = useCart()
 
   useEffect(() => {
     let isCurrent = true
 
     void loadCatalog()
-      .then(({ products }) => {
-        if (isCurrent) setProduct(products.find((item) => item.slug === slug))
+      .then((result) => {
+        if (!isCurrent) return
+        setProduct(result.products.find((item) => item.slug === slug))
+        setProducts(result.products)
       })
       .catch(() => {
-        if (isCurrent) setError('Impossible de charger cette pièce.')
+        if (isCurrent) setError('Impossible de charger ce bijou.')
       })
       .finally(() => {
         if (isCurrent) setIsLoading(false)
@@ -31,11 +40,23 @@ export function ProductDetailPage() {
     }
   }, [slug])
 
+  useEffect(() => {
+    const button = mainButtonRef.current
+    if (!button || !('IntersectionObserver' in window)) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0.1 },
+    )
+    observer.observe(button)
+    return () => observer.disconnect()
+  }, [product])
+
   if (isLoading) {
     return (
       <main className="catalog-state product-not-found">
         <p className="eyebrow">La boutique</p>
-        <h1>Chargement de la pièce…</h1>
+        <h1>Chargement du bijou…</h1>
       </main>
     )
   }
@@ -44,7 +65,7 @@ export function ProductDetailPage() {
     return (
       <main className="catalog-state product-not-found">
         <p className="eyebrow">Bijou introuvable</p>
-        <h1>{error || 'Cette pièce n’est pas disponible.'}</h1>
+        <h1>{error || 'Ce bijou n’est plus disponible.'}</h1>
         <Link className="button button-secondary" to="/shop">
           Retour à la boutique
         </Link>
@@ -58,95 +79,174 @@ export function ProductDetailPage() {
       ? [product.imageUrl]
       : []
 
+  const imageAlts = imageUrls.map(
+    (_, index) =>
+      product.imageAltTexts?.[index] ||
+      product.imageAlt ||
+      `${product.name}, photo ${index + 1} sur ${imageUrls.length}`,
+  )
+
+  const rawDescription = product.description?.trim() ?? ''
+  const isTechnicalDescription =
+    /approved whimsea|catalogue de démonstration|prix et disponibilité/i.test(
+      rawDescription,
+    )
+  const descriptionParagraphs = (
+    isTechnicalDescription ? '' : rawDescription
+  )
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  const relatedProducts = products
+    .filter((item) => item.id !== product.id)
+    .slice(0, 4)
+  const stockLabel =
+    product.stockQuantity <= 0
+      ? 'Épuisé'
+      : product.stockQuantity <= 3
+        ? `Plus que ${product.stockQuantity} ${
+            product.stockQuantity === 1 ? 'pièce' : 'pièces'
+          }`
+        : 'En stock'
+  const addToCart = () => {
+    addItem(product, quantity)
+    setIsAdded(true)
+    setCartMessage(`${product.name} ajouté au panier`)
+    window.setTimeout(() => setIsAdded(false), 2000)
+  }
+
   return (
     <main className="product-detail-page">
       <Link className="back-link" to="/shop">
-        <ArrowLeft aria-hidden="true" size={15} /> Retour à la boutique
+        <ArrowLeft aria-hidden="true" size={15} /> Boutique / {product.name}
       </Link>
       <div className={`product-detail-layout product-detail-${product.tone}`}>
-        <div className="product-detail-image">
-          {imageUrls.length ? (
-            <div className="product-gallery">
-              <img
-                className="product-image"
-                src={imageUrls[selectedImage] || imageUrls[0]}
-                alt={
-                  product.imageAltTexts?.[selectedImage] ||
-                  product.imageAlt ||
-                  product.name
-                }
-                width="1200"
-                height="1500"
-                fetchPriority="high"
-              />
-              {imageUrls.length > 1 && (
-                <div
-                  className="product-gallery-thumbnails"
-                  aria-label="Images du produit"
-                >
-                  {imageUrls.map((imageUrl, index) => (
-                    <button
-                      className={index === selectedImage ? 'is-selected' : ''}
-                      key={imageUrl}
-                      type="button"
-                      aria-label={`Voir l’image ${index + 1}`}
-                      onClick={() => setSelectedImage(index)}
-                    >
-                      <img
-                        src={imageUrl}
-                        alt={
-                          product.imageAltTexts?.[index] ||
-                          `${product.name} image ${index + 1}`
-                        }
-                        width="96"
-                        height="96"
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <span className="product-image-placeholder">
-              Image indisponible
-            </span>
-          )}
+        <div className="product-detail-media">
+          <ProductGallery
+            alts={imageAlts}
+            images={imageUrls}
+            key={product.id}
+            name={product.name}
+          />
           {product.isDemo && (
             <span className="demo-image-label">Image de démonstration</span>
           )}
         </div>
+
         <div className="product-detail-copy">
           <p className="eyebrow">{product.category}</p>
           <h1>{product.name}</h1>
           <p className="detail-price">{formatMad(product.priceCentimes)}</p>
-          <p className="detail-description">{product.description}</p>
-          <div className="detail-disclaimer">
-            <ShieldCheck aria-hidden="true" size={18} />
-            <span>
-              {product.isDemo
-                ? 'Cette pièce est présentée dans le catalogue de démonstration.'
-                : 'Prix et disponibilité confirmés par le catalogue Whimsea.'}
-            </span>
+
+          <div className="detail-description">
+            {descriptionParagraphs.length ? (
+              descriptionParagraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))
+            ) : (
+              <p>
+                Collier en acier inoxydable de haute qualité, brillant et
+                délicat, à porter tous les jours.
+              </p>
+            )}
           </div>
+
+          <ul className="detail-highlights">
+            <li>
+              <Gem aria-hidden="true" size={18} />
+              Acier inoxydable haute qualité, ne noircit pas
+            </li>
+            <li>
+              <Sparkles aria-hidden="true" size={18} />
+              Finition glaze brillante
+            </li>
+            <li>
+              <Truck aria-hidden="true" size={18} />
+              Livraison partout au Maroc · Paiement à la livraison
+            </li>
+          </ul>
+
+          <p className={`stock-label detail-stock${stockLabel === 'Épuisé' ? ' sold-out' : ''}`}>
+            {stockLabel}
+          </p>
+          {product.stockQuantity > 0 && (
+            <div className="quantity-selector" aria-label="Quantité">
+              <span>Quantité</span>
+              <div>
+                <button
+                  aria-label="Diminuer la quantité"
+                  disabled={quantity <= 1}
+                  onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+                  type="button"
+                >
+                  <Minus aria-hidden="true" size={16} />
+                </button>
+                <output aria-live="polite">{quantity}</output>
+                <button
+                  aria-label="Augmenter la quantité"
+                  disabled={quantity >= product.stockQuantity}
+                  onClick={() =>
+                    setQuantity((value) =>
+                      Math.min(product.stockQuantity, value + 1),
+                    )
+                  }
+                  type="button"
+                >
+                  <Plus aria-hidden="true" size={16} />
+                </button>
+              </div>
+            </div>
+          )}
           <button
             className="button button-primary"
-            type="button"
             disabled={product.stockQuantity <= 0}
-            onClick={() => addItem(product)}
+            onClick={addToCart}
+            ref={mainButtonRef}
+            type="button"
           >
-            {product.stockQuantity > 0 ? 'Ajouter au panier' : 'Épuisé'}
+            {product.stockQuantity > 0
+              ? isAdded
+                ? 'Ajouté ✓'
+                : 'Ajouter au panier'
+              : 'Épuisé'}
           </button>
-          {itemCount > 0 && (
-            <Link className="text-link detail-cart-link" to="/cart">
-              Voir mon panier ({itemCount})
-            </Link>
-          )}
-          <button className="wishlist-button" type="button" disabled>
-            <Heart aria-hidden="true" size={17} /> Favoris non activés
-          </button>
+          <div aria-live="polite" className="cart-feedback">
+            {cartMessage && (
+              <>
+                <span>{cartMessage}</span>{' '}
+                <Link to="/cart">Voir le panier</Link>
+              </>
+            )}
+          </div>
+          <Link className="text-link detail-cart-link" to="/cart">
+            Voir mon panier ({itemCount})
+          </Link>
         </div>
       </div>
+      {relatedProducts.length > 0 && (
+        <section className="related-products" aria-labelledby="related-products-title">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">Pour vous</p>
+              <h2 id="related-products-title">Vous aimerez aussi</h2>
+            </div>
+          </div>
+          <div className="product-grid">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            ))}
+          </div>
+        </section>
+      )}
+      {showStickyBar && product.stockQuantity > 0 && (
+        <div className="mobile-sticky-cart">
+          <strong>{formatMad(product.priceCentimes * quantity)}</strong>
+          <button className="button button-primary" onClick={addToCart} type="button">
+            {isAdded ? 'Ajouté ✓' : 'Ajouter au panier'}
+          </button>
+        </div>
+      )}
     </main>
   )
 }

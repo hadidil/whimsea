@@ -30,6 +30,23 @@ function createIdempotencyKey(): string {
   return crypto.randomUUID()
 }
 
+/** Évite qu'une requête qui ne répond jamais bloque la page indéfiniment. */
+function withTimeout<T>(promise: PromiseLike<T>, ms = 15000): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = window.setTimeout(() => reject(new Error('timeout')), ms)
+    Promise.resolve(promise).then(
+      (value) => {
+        window.clearTimeout(timer)
+        resolve(value)
+      },
+      (reason: unknown) => {
+        window.clearTimeout(timer)
+        reject(reason)
+      },
+    )
+  })
+}
+
 export function CheckoutPage() {
   const { cart, clearCart, subtotalCentimes } = useCart()
   const [searchParams] = useSearchParams()
@@ -44,7 +61,7 @@ export function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-    void loadDeliveryZones()
+    void withTimeout(loadDeliveryZones())
       .then(setZones)
       .catch(() => setSubmitError('Les zones de livraison sont indisponibles.'))
       .finally(() => setIsLoading(false))
@@ -72,44 +89,67 @@ export function CheckoutPage() {
     const client = getSupabaseClient()
     if (!client) {
       setSubmitError(
-        'La commande sera disponible après connexion du catalogue Whimsea.',
+        'La commande est momentanément indisponible. Réessayez dans quelques instants.',
       )
       return
     }
 
     setIsSubmitting(true)
     setSubmitError('')
-    const { data, error } = await createCodOrder(client, {
-      p_idempotency_key: createIdempotencyKey(),
-      p_customer_name: values.customerName.trim(),
-      p_phone: normalizeMoroccanPhone(values.phone),
-      p_city_key: quote!.zone.cityKey,
-      p_street_address: values.streetAddress.trim(),
-      p_landmark: values.landmark.trim() || null,
-      p_delivery_notes: values.deliveryNotes.trim() || null,
-      p_items: cart.items.map((item) => ({
-        product_id: item.product.id,
-        quantity: item.quantity,
-      })),
-    })
 
-    if (error || !data || typeof data !== 'object' || !('reference' in data)) {
-      setSubmitError(
-        'La commande n’a pas pu être confirmée. Vérifiez vos informations et réessayez.',
+    try {
+      const { data, error } = await withTimeout(
+        createCodOrder(client, {
+          p_idempotency_key: createIdempotencyKey(),
+          p_customer_name: values.customerName.trim(),
+          p_phone: normalizeMoroccanPhone(values.phone),
+          p_city_key: quote!.zone.cityKey,
+          p_street_address: values.streetAddress.trim(),
+          p_landmark: values.landmark.trim() || null,
+          p_delivery_notes: values.deliveryNotes.trim() || null,
+          p_items: cart.items.map((item) => ({
+            product_id: item.product.id,
+            quantity: item.quantity,
+          })),
+        }),
       )
-      setIsSubmitting(false)
-      return
-    }
 
-    window.sessionStorage.setItem(
-      `whimsea.order.${data.reference}`,
-      JSON.stringify({
-        reference: data.reference,
-        grandTotalCentimes: data.grand_total_centimes,
-      }),
-    )
-    clearCart()
-    window.location.assign(`/order-confirmation/${data.reference}`)
+      if (
+        error ||
+        !data ||
+        typeof data !== 'object' ||
+        !('reference' in data)
+      ) {
+        // Le détail technique va dans la console (F12), pas chez la cliente
+        console.error('createCodOrder a échoué :', error ?? data)
+        setSubmitError(
+          'La commande n’a pas pu être confirmée. Vérifiez vos informations et réessayez.',
+        )
+        return
+      }
+
+      window.sessionStorage.setItem(
+        `whimsea.order.${data.reference}`,
+        JSON.stringify({
+          reference: data.reference,
+          grandTotalCentimes: data.grand_total_centimes,
+          customerName: values.customerName.trim(),
+          phone: normalizeMoroccanPhone(values.phone),
+        }),
+      )
+      clearCart()
+      // replace : le bouton « retour » ne renvoie pas vers le formulaire déjà envoyé
+      window.location.replace(`/order-confirmation/${data.reference}`)
+    } catch (caught) {
+      console.error('Erreur pendant la commande :', caught)
+      setSubmitError(
+        caught instanceof Error && caught.message === 'timeout'
+          ? 'Le serveur met trop de temps à répondre. Réessayez dans un instant.'
+          : 'La commande n’a pas pu être envoyée. Vérifiez votre connexion et réessayez.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (cart.items.length === 0) {
@@ -130,11 +170,11 @@ export function CheckoutPage() {
         <ArrowLeft aria-hidden="true" size={15} /> Retour au panier
       </Link>
       <div className="checkout-heading">
-        <p className="eyebrow">Commande invitée</p>
-        <h1>Recevoir vos merveilles.</h1>
+        <p className="eyebrow">Dernière étape</p>
+        <h1>Recevoir vos bijoux.</h1>
         <p>
-          Paiement en espèces à la livraison. Aucun paiement en ligne ne sera
-          demandé.
+          Paiement à la livraison, en espèces. Aucun paiement en ligne. Nous
+          vous appelons pour confirmer votre commande.
         </p>
       </div>
       {isLoading ? (
@@ -158,7 +198,7 @@ export function CheckoutPage() {
                 {errors.customerName && <small>{errors.customerName}</small>}
               </label>
               <label>
-                Téléphone marocain
+                Téléphone (nous vous appelons pour confirmer)
                 <input
                   inputMode="tel"
                   placeholder="06 12 34 56 78"
@@ -188,8 +228,8 @@ export function CheckoutPage() {
               </label>
               {zones.length === 0 && (
                 <p className="checkout-error" role="status">
-                  Aucune zone de livraison tarifée n’est configurée. La prise de
-                  commande reste désactivée jusqu’à la configuration Supabase.
+                  La livraison n’est pas encore ouverte pour votre ville.
+                  Contactez-nous sur Instagram pour commander.
                 </p>
               )}
               <label>
@@ -233,12 +273,12 @@ export function CheckoutPage() {
                 type="submit"
                 disabled={isSubmitting || !quote}
               >
-                {isSubmitting ? 'Confirmation…' : 'Confirmer la commande COD'}
+                {isSubmitting ? 'Envoi en cours…' : 'Confirmer ma commande'}
               </button>
             </fieldset>
           </form>
           <aside className="checkout-summary">
-            <p className="eyebrow">Résumé sécurisé</p>
+            <p className="eyebrow">Votre commande</p>
             {cart.items.map((item) => (
               <div className="checkout-line" key={item.product.id}>
                 <span>
@@ -256,18 +296,18 @@ export function CheckoutPage() {
             <div className="checkout-line">
               <span>Livraison</span>
               <strong>
-                {quote ? formatMad(quote.feeCentimes) : 'À configurer'}
+                {quote ? formatMad(quote.feeCentimes) : 'Choisir une ville'}
               </strong>
             </div>
             <div className="checkout-total">
-              <span>Total à payer en espèces</span>
+              <span>Total à payer à la livraison</span>
               <strong>
                 {quote ? formatMad(subtotalCentimes + quote.feeCentimes) : '—'}
               </strong>
             </div>
             <div className="checkout-trust">
               <ShieldCheck aria-hidden="true" size={18} />
-              Les prix, le stock et les frais sont revérifiés côté serveur.
+              Paiement uniquement à la réception de votre colis.
             </div>
           </aside>
         </div>

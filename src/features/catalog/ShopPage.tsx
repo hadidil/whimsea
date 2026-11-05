@@ -69,10 +69,10 @@ export function ShopPage() {
     <main className="shop-page">
       <section className="shop-intro">
         <p className="eyebrow">La boutique</p>
-        <h1>Des détails pour tous les jours.</h1>
+        <h1>Colliers aesthetic, princess vibes.</h1>
         <p>
-          Une sélection de bijoux délicats, pensés pour illuminer les jours
-          ordinaires et les moments à célébrer.
+          Des bijoux en acier inoxydable de haute qualité, brillants et à petit
+          prix. Livraison partout au Maroc, paiement à la livraison.
         </p>
       </section>
 
@@ -81,8 +81,7 @@ export function ShopPage() {
           <span>Mode démonstration</span>
           <p>
             Les articles affichés sont des exemples et ne sont pas disponibles à
-            l’achat. Les vraies pièces apparaîtront après connexion du
-            catalogue.
+            l’achat.
           </p>
           <Link to="/contact">Nous contacter</Link>
         </div>
@@ -95,7 +94,7 @@ export function ShopPage() {
           <input
             type="search"
             value={query}
-            placeholder="Rechercher"
+            placeholder="Rechercher un collier"
             onChange={(event) => setQuery(event.target.value)}
           />
           {query && (
@@ -145,7 +144,7 @@ export function ShopPage() {
 
       {!isLoading && error && (
         <div className="catalog-state">
-          <h2>Un instant, s’il vous plaît.</h2>
+          <h2>Un instant, la boutique se réveille.</h2>
           <p>{error}</p>
           <button
             type="button"
@@ -167,7 +166,7 @@ export function ShopPage() {
 
       {!isLoading && !error && visibleProducts.length === 0 && (
         <div className="catalog-state">
-          <h2>Aucun résultat pour le moment.</h2>
+          <h2>Aucun bijou trouvé.</h2>
           <p>Essayez une autre recherche ou revenez à toute la sélection.</p>
           <button
             type="button"

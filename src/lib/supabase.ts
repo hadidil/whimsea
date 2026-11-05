@@ -23,34 +23,50 @@ export type CodOrderResult = {
   duplicate?: boolean
 }
 
+let cachedClient: WhimseaSupabaseClient | null | undefined
+
 export function getSupabaseClient(): WhimseaSupabaseClient | null {
+  if (cachedClient !== undefined) {
+    return cachedClient
+  }
+
   const url = import.meta.env.VITE_SUPABASE_URL
   const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
   if (!url || !anonKey) {
-    return null
+    cachedClient = null
+    return cachedClient
   }
 
-  return createClient<Database>(url, anonKey, {
+  cachedClient = createClient<Database>(url, anonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
     },
   })
+
+  return cachedClient
+}
+
+type RpcResponse = {
+  data: CodOrderResult | null
+  error: { message: string } | null
 }
 
 export async function createCodOrder(
   client: WhimseaSupabaseClient,
   input: CodOrderInput,
-): Promise<{ data: CodOrderResult | null; error: { message: string } | null }> {
-  const rpc = client.rpc as unknown as (
-    functionName: 'create_cod_order',
-    args: CodOrderInput,
-  ) => Promise<{
-    data: CodOrderResult | null
-    error: { message: string } | null
-  }>
+): Promise<RpcResponse> {
+  // IMPORTANT : on appelle rpc() directement sur le client.
+  // Détacher la méthode (const rpc = client.rpc) fait perdre `this`
+  // et provoque « Cannot read properties of undefined (reading 'rest') ».
+  const typedClient = client as unknown as {
+    rpc: (
+      functionName: 'create_cod_order',
+      args: CodOrderInput,
+    ) => PromiseLike<RpcResponse>
+  }
 
-  return rpc('create_cod_order', input)
+  return typedClient.rpc('create_cod_order', input)
 }

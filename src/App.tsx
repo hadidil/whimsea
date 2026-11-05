@@ -22,6 +22,7 @@ import { ProductCard } from './features/catalog/ProductCard'
 import { ShopPage } from './features/catalog/ShopPage'
 import { loadCatalog, type CatalogProduct } from './features/catalog/catalog'
 import { InstagramIcon } from './components/InstagramIcon'
+import { ShellLogo } from './components/ShellLogo'
 import {
   AboutPage,
   ContactPage,
@@ -29,7 +30,7 @@ import {
   PrivacyPage,
   TermsPage,
 } from './features/content/BrandContentPages'
-import { instagramUrl } from './config/public'
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from './config/social'
 
 const navigation = [
   { label: 'Accueil', to: '/' },
@@ -39,7 +40,7 @@ const navigation = [
 ]
 
 const pageTitles: Record<string, string> = {
-  '/': 'Whimsea · Little treasures, endless wonder',
+  '/': 'Whimsea · Colliers de princesse en acier inoxydable',
   '/shop': 'Boutique · Whimsea',
   '/about': 'À propos · Whimsea',
   '/contact': 'Contact · Whimsea',
@@ -51,11 +52,11 @@ const pageTitles: Record<string, string> = {
 function SeoMetadata() {
   const { pathname } = useLocation()
   const description =
-    'Whimsea, des bijoux délicats et lumineux pour les petits moments précieux.'
+    'Colliers aesthetic en acier inoxydable de haute qualité, à petit prix. Livraison partout au Maroc, paiement à la livraison.'
 
   useEffect(() => {
     document.title =
-      pageTitles[pathname] ?? 'Whimsea · Bijoux délicats au Maroc'
+      pageTitles[pathname] ?? 'Whimsea · Bijoux en acier inoxydable au Maroc'
     const descriptionElement = document.querySelector(
       'meta[name="description"]',
     )
@@ -72,7 +73,7 @@ function Navigation() {
   return (
     <header className="site-header">
       <Link className="brand" to="/" aria-label="Whimsea, accueil">
-        <Shell aria-hidden="true" size={18} strokeWidth={1.5} />
+        <ShellLogo size={22} />
         <span>Whimsea</span>
       </Link>
 
@@ -157,14 +158,15 @@ function HomePage() {
       <section className="hero-section" aria-labelledby="hero-title">
         <div className="hero-content">
           <Sparkle />
-          <p className="eyebrow">Bijoux délicats · Maroc</p>
+          <p className="eyebrow">Bijoux en acier inoxydable · Maroc</p>
           <h1 id="hero-title">
-            Little treasures,
-            <em>endless wonder.</em>
+            Colliers de princesse,
+            <em>à petit prix.</em>
           </h1>
           <p className="hero-copy">
-            Des bijoux doux et lumineux, imaginés pour accompagner les petits
-            moments qui deviennent de grands souvenirs.
+            Des bijoux aesthetic inspirés de Pinterest, en acier inoxydable de
+            haute qualité : brillants, délicats et résistants à l’eau, pour des
+            princess vibes tous les jours.
           </p>
           <Link className="button button-primary" to="/shop">
             Découvrir la boutique <ArrowRight aria-hidden="true" size={16} />
@@ -191,7 +193,9 @@ function HomePage() {
         <div className="section-heading">
           <div>
             <p className="eyebrow">La sélection Whimsea</p>
-            <h2 id="collection-title">Des détails à garder près de soi.</h2>
+            <h2 id="collection-title">
+              Vos colliers préférés, version princess vibes.
+            </h2>
           </div>
           <Link className="text-link" to="/shop">
             Voir la boutique <ArrowRight aria-hidden="true" size={15} />
@@ -200,17 +204,17 @@ function HomePage() {
         <div className="collection-grid">
           {[
             [
-              'Lumière rubis',
+              'Collier rubis',
               '/images/products/ruby-sand-shell.webp',
               '/products/ruby-necklace',
             ],
             [
-              'Blush délicat',
+              'Collier blush',
               '/images/products/blush-turquoise-gel.webp',
               '/products/blush-necklace',
             ],
             [
-              'Perle sur céramique',
+              'Collier perle',
               '/images/products/pearl-shell-dish.webp',
               '/products/pearl-necklace',
             ],
@@ -240,13 +244,13 @@ function HomePage() {
         >
           <div className="section-heading">
             <div>
-              <p className="eyebrow">La sélection du moment</p>
+              <p className="eyebrow">Les coups de cœur</p>
               <h2 id="featured-products-title">
-                À porter, à offrir, à garder.
+                À porter, à offrir, à adorer.
               </h2>
             </div>
             <Link className="text-link" to="/shop">
-              Voir tous les bijoux <ArrowRight aria-hidden="true" size={15} />
+              Voir tous les colliers <ArrowRight aria-hidden="true" size={15} />
             </Link>
           </div>
           <div className="product-grid">
@@ -262,11 +266,11 @@ function HomePage() {
         aria-labelledby="editorial-title"
       >
         <div className="editorial-copy">
-          <p className="eyebrow">Campagne nacrée</p>
-          <h2 id="editorial-title">La lumière se pose sur chaque détail.</h2>
+          <p className="eyebrow">Univers nacré</p>
+          <h2 id="editorial-title">De la lumière sur chaque détail.</h2>
           <p>
-            Des textures d’eau, de sable et de nacre pour révéler les bijoux
-            Whimsea dans leur écrin le plus naturel.
+            Nacre, sable et reflets d’eau : des décors tout doux pour des
+            bijoux en acier inoxydable qui brillent comme des petits trésors.
           </p>
           <Link className="text-link" to="/products/ruby-necklace">
             Voir le collier Ruby <ArrowRight aria-hidden="true" size={15} />
@@ -307,10 +311,11 @@ function HomePage() {
         </div>
         <div className="story-copy">
           <p className="eyebrow">L’univers Whimsea</p>
-          <h2 id="story-title">Une touche de poésie, tous les jours.</h2>
+          <h2 id="story-title">Un petit coin de magie à porter au cou.</h2>
           <p>
-            Whimsea est un petit refuge pour les bijoux qui se portent comme un
-            secret : délicats, personnels et toujours un peu magiques.
+            Chez Whimsea, on aime les bijoux qui brillent sans se ruiner : de
+            l’acier inoxydable de haute qualité, des pendentifs mignons et des
+            finitions soignées. Parfait pour vous ou pour offrir.
           </p>
           <Link className="text-link" to="/about">
             Découvrir notre histoire <ArrowRight aria-hidden="true" size={15} />
@@ -325,22 +330,22 @@ function HomePage() {
         <div className="reassurance-item">
           <Heart aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
-            <h3>Pensé avec soin</h3>
-            <p>Des pièces choisies pour accompagner votre quotidien.</p>
+            <h3>Acier inoxydable haute qualité</h3>
+            <p>Ne noircit pas, résiste à l’eau et se porte tous les jours.</p>
           </div>
         </div>
         <div className="reassurance-item">
           <Truck aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
-            <h3>Livraison au Maroc</h3>
-            <p>Un envoi suivi et préparé avec attention.</p>
+            <h3>Livraison partout au Maroc</h3>
+            <p>Paiement à la livraison : vous payez à la réception.</p>
           </div>
         </div>
         <div className="reassurance-item">
           <Shell aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
-            <h3>Un peu de merveilleux</h3>
-            <p>Un emballage prêt à offrir pour chaque commande.</p>
+            <h3>Prêt à offrir</h3>
+            <p>Un emballage soigné pour chaque commande.</p>
           </div>
         </div>
       </section>
@@ -350,27 +355,21 @@ function HomePage() {
         aria-labelledby="newsletter-title"
       >
         <div>
-          <p className="eyebrow">Le journal Whimsea</p>
-          <h2 id="newsletter-title">Des nouveautés, sans bruit.</h2>
+          <p className="eyebrow">Suivez-nous</p>
+          <h2 id="newsletter-title">Rejoignez-nous sur Instagram.</h2>
           <p>
-            Suivez nos nouvelles pièces et nos inspirations, directement sur
-            Instagram.
+            Nouveautés, inspirations et coups de cœur : retrouvez-nous sur{' '}
+            {INSTAGRAM_HANDLE}.
           </p>
         </div>
-        {instagramUrl ? (
-          <a
-            className="button button-secondary newsletter-link"
-            href={instagramUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <InstagramIcon size={17} /> Instagram
-          </a>
-        ) : (
-          <span className="newsletter-link newsletter-link-disabled">
-            <InstagramIcon size={17} /> Instagram
-          </span>
-        )}
+        <a
+          className="button button-secondary newsletter-link"
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <InstagramIcon size={17} /> Instagram
+        </a>
       </section>
     </main>
   )
@@ -396,7 +395,7 @@ function App() {
         <SeoMetadata />
         <div className="announcement">
           <Sparkle />
-          <span>Livraison suivie partout au Maroc · Paiement sécurisé</span>
+          <span>Livraison partout au Maroc · Paiement à la livraison</span>
           <Sparkle delay />
         </div>
         <Navigation />
@@ -423,11 +422,13 @@ function App() {
         <footer className="site-footer">
           <div className="footer-brand">
             <Link className="brand" to="/" aria-label="Whimsea, accueil">
-              <Shell aria-hidden="true" size={17} strokeWidth={1.5} />
+              <ShellLogo size={20} />
               <span>Whimsea</span>
             </Link>
             <p>Little treasures, endless wonder.</p>
-            <p className="footer-meta">Bijoux délicats, imaginés au Maroc.</p>
+            <p className="footer-meta">
+              Bijoux en acier inoxydable, livrés partout au Maroc.
+            </p>
           </div>
           <div>
             <p className="eyebrow">Navigation</p>
@@ -441,11 +442,14 @@ function App() {
           <div>
             <p className="eyebrow">Nous trouver</p>
             <div className="footer-socials">
-              {instagramUrl && (
-                <a href={instagramUrl} target="_blank" rel="noreferrer">
-                  <InstagramIcon size={16} /> Instagram
-                </a>
-              )}
+              <a
+                aria-label="Whimsea sur Instagram"
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <InstagramIcon size={16} /> {INSTAGRAM_HANDLE}
+              </a>
             </div>
             <div className="footer-payments">
               <span>Paiement à la livraison</span>
