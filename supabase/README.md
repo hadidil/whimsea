@@ -47,6 +47,12 @@ categories and base migration exist. Upload the matching WebP files through
 the authenticated `/admin/catalog` flow; local files in `public/images` are
 editorial fallbacks, not proof that Supabase Storage has been populated.
 
+The visual refresh adds `Blush Necklace` (`WH-NECK-BLUSH-01`) and `Teardrop
+Necklace` (`WH-NECK-TEARDROP-01`) to the same seed. It also adds local gallery
+fallbacks for the Ruby, Crystal, Pearl, Blush, and Teardrop products. Storage
+images remain authoritative when they exist, so upload and order the approved
+files in `/admin/catalog` before activating products for customers.
+
 ## Applying it
 
 The Supabase CLI is not installed or authenticated in this workspace, and no

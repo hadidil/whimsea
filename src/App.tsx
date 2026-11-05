@@ -1,8 +1,8 @@
 import {
   ArrowRight,
-  Gem,
   Heart,
   Menu,
+  Shell,
   ShoppingBag,
   Sparkles,
   Truck,
@@ -69,7 +69,7 @@ function Navigation() {
   return (
     <header className="site-header">
       <Link className="brand" to="/" aria-label="Whimsea, accueil">
-        <Gem aria-hidden="true" size={18} strokeWidth={1.5} />
+        <Shell aria-hidden="true" size={18} strokeWidth={1.5} />
         <span>Whimsea</span>
       </Link>
 
@@ -135,27 +135,12 @@ function HomePage() {
             Découvrir la boutique <ArrowRight aria-hidden="true" size={16} />
           </Link>
         </div>
-        <div
-          className="hero-art"
-          aria-label="Illustration décorative de perles"
-        >
+        <div className="hero-art">
           <img
             className="hero-product-image"
             src="/images/products/ruby-water.webp"
             alt="Collier Ruby de Whimsea"
           />
-          <div className="hero-orbit hero-orbit-one" />
-          <div className="hero-orbit hero-orbit-two" />
-          <div className="hero-pearl hero-pearl-large" />
-          <div className="hero-pearl hero-pearl-small" />
-          <div className="hero-chain" />
-          <span className="hero-art-label">made with wonder</span>
-          <span className="sparkle sparkle-one" aria-hidden="true">
-            ✦
-          </span>
-          <span className="sparkle sparkle-two" aria-hidden="true">
-            ✧
-          </span>
         </div>
       </section>
 
@@ -165,8 +150,8 @@ function HomePage() {
       >
         <div className="section-heading">
           <div>
-            <p className="eyebrow">À découvrir bientôt</p>
-            <h2 id="collection-title">Des détails qui font rêver.</h2>
+            <p className="eyebrow">La sélection Whimsea</p>
+            <h2 id="collection-title">Des détails à garder près de soi.</h2>
           </div>
           <Link className="text-link" to="/shop">
             Voir la boutique <ArrowRight aria-hidden="true" size={15} />
@@ -174,9 +159,12 @@ function HomePage() {
         </div>
         <div className="collection-grid">
           {[
-            ['Pearls & light', '/images/products/ruby-water.webp'],
-            ['Everyday magic', '/images/products/crystal-pink.webp'],
-            ['Little keepsakes', '/images/products/pearl-model.webp'],
+            ['Lumière rubis', '/images/products/ruby-satin.webp'],
+            ['Blush délicat', '/images/products/blush-necklace-pendant.webp'],
+            [
+              'Perle sur céramique',
+              '/images/products/pearl-necklace-ceramic.webp',
+            ],
           ].map(([collection, image], index) => (
             <Link
               className={`collection-card card-tone-${index + 1}`}
@@ -201,11 +189,12 @@ function HomePage() {
         className="story-section page-section"
         aria-labelledby="story-title"
       >
-        <div className="story-art" aria-hidden="true">
-          <div className="story-disc story-disc-one" />
-          <div className="story-disc story-disc-two" />
-          <div className="story-line" />
-          <span className="story-sparkle">✦</span>
+        <div className="story-art">
+          <img
+            src="/images/products/pearl-necklace-ceramic.webp"
+            alt="Collier Pearl posé sur une céramique claire"
+            loading="lazy"
+          />
         </div>
         <div className="story-copy">
           <p className="eyebrow">L’univers Whimsea</p>
@@ -239,7 +228,7 @@ function HomePage() {
           </div>
         </div>
         <div className="reassurance-item">
-          <Gem aria-hidden="true" size={21} strokeWidth={1.4} />
+          <Shell aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
             <h3>Un peu de merveilleux</h3>
             <p>Pour offrir, garder, et faire sourire.</p>
@@ -292,7 +281,7 @@ function App() {
         <footer className="site-footer">
           <div className="footer-brand">
             <Link className="brand" to="/" aria-label="Whimsea, accueil">
-              <Gem aria-hidden="true" size={17} strokeWidth={1.5} />
+              <Shell aria-hidden="true" size={17} strokeWidth={1.5} />
               <span>Whimsea</span>
             </Link>
             <p>Little treasures, endless wonder.</p>

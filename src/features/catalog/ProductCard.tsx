@@ -47,10 +47,11 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
       <Link
-        className="product-card-arrow"
+        className="product-card-link"
         to={`/products/${product.slug}`}
         aria-label={`Découvrir ${product.name}`}
       >
+        Découvrir
         <ArrowRight aria-hidden="true" size={16} />
       </Link>
     </article>

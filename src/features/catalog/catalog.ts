@@ -23,13 +23,29 @@ const approvedLocalImages: Record<string, string[]> = {
     '/images/products/ruby-water.webp',
     '/images/products/ruby-satin.webp',
     '/images/products/ruby-model.webp',
+    '/images/products/ruby-editorial-pendant.webp',
+    '/images/products/ruby-detail-pendant.webp',
   ],
   'crystal-necklace': [
     '/images/products/crystal-pink.webp',
     '/images/products/crystal-model.webp',
+    '/images/products/crystal-necklace-solitaire.webp',
+    '/images/products/crystal-necklace-lace.webp',
   ],
   'onyx-necklace': ['/images/products/onyx-model.webp'],
-  'pearl-necklace': ['/images/products/pearl-model.webp'],
+  'pearl-necklace': [
+    '/images/products/pearl-model.webp',
+    '/images/products/pearl-necklace-ceramic.webp',
+  ],
+  'blush-necklace': [
+    '/images/products/blush-necklace-pendant.webp',
+    '/images/products/blush-necklace-model.webp',
+  ],
+  'teardrop-necklace': [
+    '/images/products/teardrop-necklace-crystal.webp',
+    '/images/products/teardrop-necklace-sparkle.webp',
+    '/images/products/teardrop-necklace-model.webp',
+  ],
 }
 
 const demoProducts: CatalogProduct[] = [

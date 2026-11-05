@@ -1,17 +1,17 @@
 @import 'tailwindcss';
 
 :root {
-  --color-page: #fffbfd;
+  --color-page: #faf7ff;
   --color-surface: #ffffff;
-  --color-blush-50: #fff5f9;
-  --color-blush-100: #ffeaf2;
-  --color-blush-200: #fbd7e6;
-  --color-blush-300: #f4bed4;
-  --color-rose: #a96084;
-  --color-ink: #493b47;
-  --color-muted: #756773;
-  --color-border: #f1dfe7;
-  --color-champagne: #d5b69c;
+  --color-blush-50: #fff4f8;
+  --color-blush-100: #f8dceb;
+  --color-blush-200: #e9d8f7;
+  --color-blush-300: #d5b5e9;
+  --color-rose: #60466f;
+  --color-ink: #382b40;
+  --color-muted: #6f6075;
+  --color-border: #e6d9eb;
+  --color-champagne: #c59c70;
   --font-display: Georgia, 'Times New Roman', serif;
   --font-body: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
   color: var(--color-ink);
@@ -96,9 +96,7 @@ a {
 
 .hero-section {
   align-items: center;
-  background:
-    radial-gradient(circle at 72% 45%, #f9f2ff 0, transparent 25rem),
-    linear-gradient(115deg, var(--color-page), var(--color-blush-50));
+  background: linear-gradient(115deg, #faf7ff, #fff4e8);
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1fr);
   margin: 0 auto;
@@ -231,100 +229,19 @@ h2 {
 
 .hero-art {
   align-self: stretch;
-  min-height: 350px;
+  min-height: 420px;
   position: relative;
 }
 
 .hero-product-image {
-  border-radius: 50%;
-  box-shadow: 0 18px 40px #a9608440;
-  height: min(28vw, 360px);
-  left: 50%;
+  border-radius: 1.25rem 1.25rem 0 1.25rem;
+  box-shadow: 0 24px 55px #60466f24;
+  height: 100%;
+  inset: 0;
   object-fit: cover;
+  object-position: center 38%;
   position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(28vw, 360px);
-  z-index: 1;
-}
-
-.hero-art::before {
-  background: linear-gradient(135deg, #ffffffb8, #f8dce9b8);
-  border: 1px solid #ffffff;
-  border-radius: 50%;
-  content: '';
-  height: min(34vw, 460px);
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(34vw, 460px);
-}
-
-.hero-orbit {
-  border: 1px solid #c77e9f66;
-  border-radius: 50%;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-24deg);
-}
-
-.hero-orbit-one {
-  height: 65%;
-  width: 86%;
-}
-
-.hero-orbit-two {
-  height: 86%;
-  transform: translate(-50%, -50%) rotate(54deg);
-  width: 65%;
-}
-
-.hero-pearl {
-  background: radial-gradient(circle at 30% 25%, #fff, #f4dce6 52%, #d5b69c);
-  border-radius: 50%;
-  box-shadow: 0 12px 30px #a9608440;
-  position: absolute;
-}
-
-.hero-pearl-large {
-  height: 92px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 92px;
-}
-
-.hero-pearl-small {
-  height: 28px;
-  right: 15%;
-  top: 27%;
-  width: 28px;
-}
-
-.hero-chain {
-  border: 1px solid var(--color-champagne);
-  border-bottom: 0;
-  border-radius: 50% 50% 0 0;
-  height: 42%;
-  left: 50%;
-  position: absolute;
-  top: 13%;
-  transform: translateX(-50%) rotate(20deg);
-  width: 35%;
-}
-
-.hero-art-label {
-  bottom: 8%;
-  color: var(--color-rose);
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  left: 50%;
-  letter-spacing: 0.08em;
-  position: absolute;
-  transform: translateX(-50%) rotate(-8deg);
-  white-space: nowrap;
+  width: 100%;
 }
 
 .page-section {
@@ -361,19 +278,20 @@ h2 {
 
 .collection-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  grid-template-columns: 1.25fr 0.85fr 0.85fr;
 }
 
 .collection-card {
   aspect-ratio: 0.82;
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
+  background: var(--color-surface);
+  border: 0;
+  border-radius: 1rem 1rem 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  padding: 1.2rem;
+  padding: 0;
   text-decoration: none;
   transition:
     box-shadow 180ms ease,
@@ -381,27 +299,14 @@ h2 {
 }
 
 .collection-card-image {
-  height: 75%;
-  margin: auto;
-  object-fit: contain;
+  height: calc(100% - 3.75rem);
+  object-fit: cover;
   width: 100%;
 }
 
 .collection-card:hover {
   box-shadow: 0 18px 35px #493b4714;
   transform: translateY(-4px);
-}
-
-.card-tone-1 {
-  background: linear-gradient(145deg, #fff, #f4e3eb);
-}
-
-.card-tone-2 {
-  background: linear-gradient(145deg, #fef6ef, #efd9d0);
-}
-
-.card-tone-3 {
-  background: linear-gradient(145deg, #f9f3ff, #e4dff1);
 }
 
 .card-placeholder {
@@ -440,7 +345,7 @@ h2 {
   cursor: pointer;
   flex: 0 0 72px;
   overflow: hidden;
-  padding: 0;
+  padding: 1rem 1.15rem;
 }
 
 .product-gallery-thumbnails button.is-selected {
@@ -463,52 +368,17 @@ h2 {
 }
 
 .story-art {
-  aspect-ratio: 1;
-  background: var(--color-blush-50);
-  border-radius: 50%;
+  aspect-ratio: 0.95;
+  border-radius: 1.25rem 1.25rem 0 1.25rem;
   max-width: 460px;
   overflow: hidden;
   position: relative;
 }
 
-.story-disc {
-  background: radial-gradient(circle at 30% 25%, #fff, #f6cfdd);
-  border-radius: 50%;
-  position: absolute;
-}
-
-.story-disc-one {
-  height: 43%;
-  left: 17%;
-  top: 18%;
-  width: 43%;
-}
-
-.story-disc-two {
-  background: radial-gradient(circle at 30% 25%, #fff, #dec9da);
-  bottom: 15%;
-  height: 27%;
-  right: 18%;
-  width: 27%;
-}
-
-.story-line {
-  border: 1px solid var(--color-champagne);
-  border-radius: 50%;
-  height: 52%;
-  left: 27%;
-  position: absolute;
-  top: 15%;
-  transform: rotate(30deg);
-  width: 43%;
-}
-
-.story-sparkle {
-  color: var(--color-champagne);
-  font-size: 2rem;
-  position: absolute;
-  right: 21%;
-  top: 25%;
+.story-art img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .story-copy h2 {
@@ -795,7 +665,8 @@ h2 {
 .product-detail-image {
   align-items: center;
   aspect-ratio: 0.9;
-  border-radius: 1rem;
+  background: var(--color-blush-50);
+  border-radius: 0.9rem 0.9rem 0 0.9rem;
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -817,31 +688,10 @@ h2 {
   background: linear-gradient(145deg, #fbf8ff, #e0dced);
 }
 
-.product-card-image::before,
-.product-detail-image::before {
-  background: radial-gradient(circle at 30% 25%, #fff, #eed4df 55%, #cfa9bb);
-  border-radius: 50%;
-  box-shadow: 0 18px 35px #493b4720;
-  content: '';
-  height: 34%;
-  position: absolute;
-  width: 34%;
-}
-
-.product-card-champagne .product-card-image::before,
-.product-detail-champagne .product-detail-image::before {
-  background: radial-gradient(circle at 30% 25%, #fff, #efdfc5 55%, #c4a17d);
-}
-
-.product-card-lilac .product-card-image::before,
-.product-detail-lilac .product-detail-image::before {
-  background: radial-gradient(circle at 30% 25%, #fff, #e4dff0 55%, #a9a0c1);
-}
-
 .product-image-placeholder {
   background: #ffffff99;
   border: 1px dashed #c77e9f70;
-  border-radius: 999px;
+  border-radius: 0.5rem;
   color: var(--color-rose);
   font-size: 0.65rem;
   letter-spacing: 0.08em;
@@ -854,7 +704,7 @@ h2 {
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: inherit;
 }
 
@@ -948,23 +798,21 @@ h2 {
   color: var(--color-rose);
 }
 
-.product-card-arrow {
+.product-card-link {
   align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  bottom: 0;
   color: var(--color-rose);
+  bottom: 0;
   display: flex;
-  height: 2rem;
+  font-size: 0.72rem;
+  gap: 0.35rem;
   justify-content: center;
   position: absolute;
   right: 0;
   text-decoration: none;
-  width: 2rem;
 }
 
-.product-card-arrow:hover {
-  background: var(--color-blush-100);
+.product-card-link:hover {
+  color: var(--color-ink);
 }
 
 .product-skeleton {
@@ -1023,11 +871,6 @@ h2 {
 
 .product-detail-image {
   min-height: 500px;
-}
-
-.product-detail-image::before {
-  height: 28%;
-  width: 28%;
 }
 
 .demo-image-label {
@@ -2003,14 +1846,8 @@ h2 {
     width: min(100%, 410px);
   }
 
-  .hero-art::before {
-    height: 280px;
-    width: 280px;
-  }
-
-  .hero-pearl-large {
-    height: 70px;
-    width: 70px;
+  .hero-art {
+    min-height: 360px;
   }
 
   .section-heading {

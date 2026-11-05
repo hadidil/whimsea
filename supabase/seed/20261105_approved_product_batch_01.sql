@@ -12,7 +12,9 @@ from (
     ('Ruby Necklace', 'ruby-necklace', 'WH-NECK-RUBY-01', 'Approved Whimsea product batch item.', 12900, true),
     ('Crystal Necklace', 'crystal-necklace', 'WH-NECK-CRYSTAL-01', 'Approved Whimsea product batch item.', 12900, true),
     ('Onyx Necklace', 'onyx-necklace', 'WH-NECK-ONYX-01', 'Approved Whimsea product batch item.', 12900, false),
-    ('Pearl Necklace', 'pearl-necklace', 'WH-NECK-PEARL-01', 'Approved Whimsea product batch item.', 12900, false)
+    ('Pearl Necklace', 'pearl-necklace', 'WH-NECK-PEARL-01', 'Approved Whimsea product batch item.', 12900, false),
+    ('Blush Necklace', 'blush-necklace', 'WH-NECK-BLUSH-01', 'Approved Whimsea product batch item.', 12900, false),
+    ('Teardrop Necklace', 'teardrop-necklace', 'WH-NECK-TEARDROP-01', 'Approved Whimsea product batch item.', 12900, false)
 ) as batch(name, slug, sku, description, price_centimes, featured)
 cross join lateral (
   select id from public.categories
