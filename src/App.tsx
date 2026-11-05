@@ -174,10 +174,10 @@ function HomePage() {
         <div className="hero-art">
           <img
             className="hero-product-image"
-            src="/images/products/ruby-water.webp"
-            alt="Collier Ruby de Whimsea"
-            width="1200"
-            height="1440"
+            src="/images/products/blush-shimmering-nacre.webp"
+            alt="Collier doré sur nacre scintillante"
+            width="941"
+            height="1671"
             fetchPriority="high"
           />
           <Sparkle className="sparkle-one" delay />
@@ -202,17 +202,17 @@ function HomePage() {
           {[
             [
               'Lumière rubis',
-              '/images/products/ruby-satin.webp',
+              '/images/products/ruby-sand-shell.webp',
               '/products/ruby-necklace',
             ],
             [
               'Blush délicat',
-              '/images/products/blush-necklace-pendant.webp',
+              '/images/products/blush-turquoise-gel.webp',
               '/products/blush-necklace',
             ],
             [
               'Perle sur céramique',
-              '/images/products/pearl-necklace-ceramic.webp',
+              '/images/products/pearl-shell-dish.webp',
               '/products/pearl-necklace',
             ],
           ].map(([collection, image, to]) => (
@@ -259,15 +259,50 @@ function HomePage() {
       )}
 
       <section
+        className="editorial-section page-section"
+        aria-labelledby="editorial-title"
+      >
+        <div className="editorial-copy">
+          <p className="eyebrow">Campagne nacrée</p>
+          <h2 id="editorial-title">La lumière se pose sur chaque détail.</h2>
+          <p>
+            Des textures d’eau, de sable et de nacre pour révéler les bijoux
+            Whimsea dans leur écrin le plus naturel.
+          </p>
+          <Link className="text-link" to="/products/ruby-necklace">
+            Voir le collier Ruby <ArrowRight aria-hidden="true" size={15} />
+          </Link>
+        </div>
+        <div className="editorial-mosaic">
+          <img
+            className="editorial-image editorial-image-large"
+            src="/images/products/pearl-iridescent-shell-box.webp"
+            alt="Collier doré dans un écrin coquillage irisé"
+            width="1086"
+            height="1448"
+            loading="lazy"
+          />
+          <img
+            className="editorial-image editorial-image-small"
+            src="/images/products/ruby-shell-box.webp"
+            alt="Collier Ruby dans un écrin nacré"
+            width="1086"
+            height="1448"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <section
         className="story-section page-section"
         aria-labelledby="story-title"
       >
         <div className="story-art">
           <img
-            src="/images/products/pearl-necklace-ceramic.webp"
-            alt="Collier Pearl posé sur une céramique claire"
-            width="800"
-            height="1000"
+            src="/images/products/ruby-lipstick.webp"
+            alt="Pendentif rubis sur une texture rouge satinée"
+            width="941"
+            height="1672"
             loading="lazy"
           />
         </div>

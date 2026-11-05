@@ -53,6 +53,22 @@ fallbacks for the Ruby, Crystal, Pearl, Blush, and Teardrop products. Storage
 images remain authoritative when they exist, so upload and order the approved
 files in `/admin/catalog` before activating products for customers.
 
+The latest local editorial fallback gallery adds these owner-approved WebP
+files without changing product IDs or stock:
+
+- Ruby: `ruby-sand-shell.webp`, `ruby-shell-box.webp`, `ruby-lipstick.webp`
+- Crystal: `crystal-editorial-reflection.webp`
+- Pearl: `pearl-shell-dish.webp`, `pearl-iridescent-shell-box.webp`
+- Blush: `blush-editorial-necklace.webp`, `blush-turquoise-gel.webp`,
+  `blush-beige-stone.webp`, `blush-shimmering-nacre.webp`
+
+The requested `Collier rubis dans un écrin nacré(2).png` source was not found,
+so no replacement or duplicate was created. These files are local fallbacks
+only. To make them appear when Supabase Storage is authoritative, upload the
+same WebP files through `/admin/catalog`, set their product order and alt text,
+then activate the relevant existing product records. No Supabase records were
+changed by this update.
+
 ## Applying it
 
 The Supabase CLI is not installed or authenticated in this workspace, and no
