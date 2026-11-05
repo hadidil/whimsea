@@ -65,6 +65,15 @@ function SeoMetadata() {
 
   return null
 }
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+
+  return null
+}
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -393,6 +402,7 @@ function App() {
     <CartProvider>
       <div className="app-shell">
         <SeoMetadata />
+        <ScrollToTop />
         <div className="announcement">
           <Sparkle />
           <span>Livraison partout au Maroc · Paiement à la livraison</span>
