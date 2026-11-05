@@ -11,7 +11,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const isAvailable = product.stockQuantity > 0
 
   return (
-    <article className={`product-card product-card-${product.tone}`}>
+    <article className="product-card">
       <Link
         className="product-card-image"
         to={`/products/${product.slug}`}
@@ -22,9 +22,12 @@ export function ProductCard({ product }: ProductCardProps) {
             className="product-image"
             src={product.imageUrl}
             alt={product.imageAlt || product.name}
+            width="800"
+            height="1000"
+            loading="lazy"
           />
         ) : (
-          <span className="product-image-placeholder">Photo à venir</span>
+          <span className="product-image-placeholder">Image indisponible</span>
         )}
         {product.featured && <span className="product-badge">Sélection</span>}
       </Link>

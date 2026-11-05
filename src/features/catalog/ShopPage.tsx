@@ -71,8 +71,8 @@ export function ShopPage() {
         <p className="eyebrow">La boutique</p>
         <h1>Des détails pour tous les jours.</h1>
         <p>
-          Une sélection de bijoux délicats, bientôt enrichie avec les pièces
-          réelles de Whimsea.
+          Une sélection de bijoux délicats, pensés pour illuminer les jours
+          ordinaires et les moments à célébrer.
         </p>
       </section>
 

@@ -1,10 +1,12 @@
 import {
   ArrowRight,
+  Camera,
+  CreditCard,
   Heart,
+  Mail,
   Menu,
   Shell,
   ShoppingBag,
-  Sparkles,
   Truck,
   X,
 } from 'lucide-react'
@@ -19,7 +21,9 @@ import { AdminDashboardPage } from './features/admin/AdminDashboardPage'
 import { AdminLoginPage } from './features/admin/AdminLoginPage'
 import { AdminCatalogPage } from './features/admin/AdminCatalogPage'
 import { ProductDetailPage } from './features/catalog/ProductDetailPage'
+import { ProductCard } from './features/catalog/ProductCard'
 import { ShopPage } from './features/catalog/ShopPage'
+import { loadCatalog, type CatalogProduct } from './features/catalog/catalog'
 import {
   AboutPage,
   ContactPage,
@@ -112,16 +116,48 @@ function Navigation() {
   )
 }
 
+function Sparkle({
+  className = '',
+  delay = false,
+}: {
+  className?: string
+  delay?: boolean
+}) {
+  return (
+    <span
+      className={`sparkle sparkle-twinkle${delay ? ' sparkle-delay' : ''} ${className}`}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 24 24" role="presentation">
+        <path d="M12 1.5c.8 5.2 2.8 8.2 9.5 10.5-6.7 2.3-8.7 5.3-9.5 10.5C11.2 17.3 9.2 14.3 2.5 12 9.2 9.7 11.2 6.7 12 1.5Z" />
+      </svg>
+    </span>
+  )
+}
+
 function HomePage() {
+  const [featuredProducts, setFeaturedProducts] = useState<CatalogProduct[]>([])
+
+  useEffect(() => {
+    let isCurrent = true
+    void loadCatalog()
+      .then(({ products }) => {
+        if (isCurrent) setFeaturedProducts(products.slice(0, 4))
+      })
+      .catch(() => {
+        if (isCurrent) setFeaturedProducts([])
+      })
+
+    return () => {
+      isCurrent = false
+    }
+  }, [])
+
   return (
     <main>
-      <div className="announcement">
-        <Sparkles aria-hidden="true" size={14} />
-        <span>Un petit monde précieux arrive bientôt</span>
-        <Sparkles aria-hidden="true" size={14} />
-      </div>
       <section className="hero-section" aria-labelledby="hero-title">
         <div className="hero-content">
+          <Sparkle />
           <p className="eyebrow">Bijoux délicats · Maroc</p>
           <h1 id="hero-title">
             Little treasures,
@@ -140,7 +176,12 @@ function HomePage() {
             className="hero-product-image"
             src="/images/products/ruby-water.webp"
             alt="Collier Ruby de Whimsea"
+            width="1200"
+            height="1440"
+            fetchPriority="high"
           />
+          <Sparkle className="sparkle-one" delay />
+          <Sparkle className="sparkle-two" />
         </div>
       </section>
 
@@ -159,22 +200,30 @@ function HomePage() {
         </div>
         <div className="collection-grid">
           {[
-            ['Lumière rubis', '/images/products/ruby-satin.webp'],
-            ['Blush délicat', '/images/products/blush-necklace-pendant.webp'],
+            [
+              'Lumière rubis',
+              '/images/products/ruby-satin.webp',
+              '/products/ruby-necklace',
+            ],
+            [
+              'Blush délicat',
+              '/images/products/blush-necklace-pendant.webp',
+              '/products/blush-necklace',
+            ],
             [
               'Perle sur céramique',
               '/images/products/pearl-necklace-ceramic.webp',
+              '/products/pearl-necklace',
             ],
-          ].map(([collection, image], index) => (
-            <Link
-              className={`collection-card card-tone-${index + 1}`}
-              to="/shop"
-              key={collection}
-            >
+          ].map(([collection, image, to]) => (
+            <Link className="collection-card" to={to} key={collection}>
               <img
                 className="collection-card-image"
                 src={image}
                 alt={collection}
+                width="800"
+                height="1000"
+                loading="lazy"
               />
               <span className="collection-card-footer">
                 <span>{collection}</span>
@@ -185,6 +234,30 @@ function HomePage() {
         </div>
       </section>
 
+      {featuredProducts.length > 0 && (
+        <section
+          className="featured-products-section page-section"
+          aria-labelledby="featured-products-title"
+        >
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">La sélection du moment</p>
+              <h2 id="featured-products-title">
+                À porter, à offrir, à garder.
+              </h2>
+            </div>
+            <Link className="text-link" to="/shop">
+              Voir tous les bijoux <ArrowRight aria-hidden="true" size={15} />
+            </Link>
+          </div>
+          <div className="product-grid">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
       <section
         className="story-section page-section"
         aria-labelledby="story-title"
@@ -193,6 +266,8 @@ function HomePage() {
           <img
             src="/images/products/pearl-necklace-ceramic.webp"
             alt="Collier Pearl posé sur une céramique claire"
+            width="800"
+            height="1000"
             loading="lazy"
           />
         </div>
@@ -217,23 +292,45 @@ function HomePage() {
           <Heart aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
             <h3>Pensé avec soin</h3>
-            <p>Une sélection douce, à découvrir prochainement.</p>
+            <p>Des pièces choisies pour accompagner votre quotidien.</p>
           </div>
         </div>
         <div className="reassurance-item">
           <Truck aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
             <h3>Livraison au Maroc</h3>
-            <p>Les détails seront annoncés avec la boutique.</p>
+            <p>Un envoi suivi et préparé avec attention.</p>
           </div>
         </div>
         <div className="reassurance-item">
           <Shell aria-hidden="true" size={21} strokeWidth={1.4} />
           <div>
             <h3>Un peu de merveilleux</h3>
-            <p>Pour offrir, garder, et faire sourire.</p>
+            <p>Un emballage prêt à offrir pour chaque commande.</p>
           </div>
         </div>
+      </section>
+
+      <section
+        className="newsletter-section page-section"
+        aria-labelledby="newsletter-title"
+      >
+        <div>
+          <p className="eyebrow">Le journal Whimsea</p>
+          <h2 id="newsletter-title">Des nouveautés, sans bruit.</h2>
+          <p>
+            Suivez nos nouvelles pièces et nos inspirations, directement sur
+            Instagram.
+          </p>
+        </div>
+        <a
+          className="button button-secondary newsletter-link"
+          href="https://www.instagram.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Camera aria-hidden="true" size={17} /> @whimsea
+        </a>
       </section>
     </main>
   )
@@ -257,6 +354,11 @@ function App() {
     <CartProvider>
       <div className="app-shell">
         <SeoMetadata />
+        <div className="announcement">
+          <Sparkle />
+          <span>Livraison suivie partout au Maroc · Paiement sécurisé</span>
+          <Sparkle delay />
+        </div>
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -285,11 +387,35 @@ function App() {
               <span>Whimsea</span>
             </Link>
             <p>Little treasures, endless wonder.</p>
+            <p className="footer-meta">Bijoux délicats, imaginés au Maroc.</p>
           </div>
-          <div className="footer-meta">
-            <span>Une aventure marocaine, bientôt.</span>
+          <div>
+            <p className="eyebrow">Navigation</p>
             <div className="footer-links">
+              <Link to="/shop">Nos pièces</Link>
+              <Link to="/about">À propos</Link>
+              <Link to="/contact">Contact</Link>
               <Link to="/delivery-returns">Livraison & retours</Link>
+            </div>
+          </div>
+          <div>
+            <p className="eyebrow">Nous trouver</p>
+            <div className="footer-socials">
+              <a href="mailto:bonjour@whimsea.ma">
+                <Mail aria-hidden="true" size={16} /> bonjour@whimsea.ma
+              </a>
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Camera aria-hidden="true" size={16} /> Instagram
+              </a>
+            </div>
+            <div className="footer-payments">
+              <span>
+                <CreditCard aria-hidden="true" size={15} /> Paiement sécurisé
+              </span>
               <Link to="/privacy">Confidentialité</Link>
               <Link to="/terms">Conditions</Link>
             </div>

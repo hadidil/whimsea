@@ -92,8 +92,18 @@ export function CartPage() {
         <section className="cart-items" aria-label="Articles dans le panier">
           {cart.items.map((item) => (
             <article className="cart-item" key={item.product.id}>
-              <div className={`cart-item-image cart-tone-${item.product.tone}`}>
-                <span>Photo à venir</span>
+              <div className="cart-item-image">
+                {item.product.imageUrl ? (
+                  <img
+                    src={item.product.imageUrl}
+                    alt={item.product.imageAlt || item.product.name}
+                    width="96"
+                    height="96"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span>Image indisponible</span>
+                )}
               </div>
               <div className="cart-item-details">
                 <p className="product-category">{item.product.category}</p>

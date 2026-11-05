@@ -75,6 +75,9 @@ export function ProductDetailPage() {
                   product.imageAlt ||
                   product.name
                 }
+                width="1200"
+                height="1500"
+                fetchPriority="high"
               />
               {imageUrls.length > 1 && (
                 <div
@@ -95,6 +98,9 @@ export function ProductDetailPage() {
                           product.imageAltTexts?.[index] ||
                           `${product.name} image ${index + 1}`
                         }
+                        width="96"
+                        height="96"
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -102,7 +108,9 @@ export function ProductDetailPage() {
               )}
             </div>
           ) : (
-            <span className="product-image-placeholder">Photo à venir</span>
+            <span className="product-image-placeholder">
+              Image indisponible
+            </span>
           )}
           {product.isDemo && (
             <span className="demo-image-label">Image de démonstration</span>
@@ -117,7 +125,7 @@ export function ProductDetailPage() {
             <ShieldCheck aria-hidden="true" size={18} />
             <span>
               {product.isDemo
-                ? 'Prix, disponibilité et détails réels seront confirmés au lancement.'
+                ? 'Cette pièce est présentée dans le catalogue de démonstration.'
                 : 'Prix et disponibilité confirmés par le catalogue Whimsea.'}
             </span>
           </div>
@@ -135,7 +143,7 @@ export function ProductDetailPage() {
             </Link>
           )}
           <button className="wishlist-button" type="button" disabled>
-            <Heart aria-hidden="true" size={17} /> Ajouter aux favoris (bientôt)
+            <Heart aria-hidden="true" size={17} /> Favoris non activés
           </button>
         </div>
       </div>
